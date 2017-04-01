@@ -35,6 +35,8 @@ public class Server implements ActionListener{
 	private static Server window;
 	private ServerThread serverThread;
 	public Hashtable<String, Socket> clients = new Hashtable<>();
+	public Hashtable<String, Socket> sendFileClients = new Hashtable<>();
+	public Hashtable<String, Socket> audioCallClients = new Hashtable<>();
 	
 	/**
 	 * Launch the application.
@@ -139,7 +141,9 @@ public class Server implements ActionListener{
 		scrollPane.setViewportView(textArea);
 		frame.getContentPane().setLayout(groupLayout);
 	}
-	
+	/*
+	 * Handle clients send message
+	 */
 	public void removeClient(String client){
 		clients.remove(client);
 	}
@@ -147,16 +151,45 @@ public class Server implements ActionListener{
 	public boolean isExistsUsername(String client){
 		return clients.containsKey(client);
 	}
-
 	public void addClients(String username, Socket socket){
 		clients.put(username, socket);
 	}
-	
     public Socket getClient(String client){
-        return clients.get(client);
-    }
-    
-		
+	     return clients.get(client);
+	}
+	
+    /*
+     * Handle clients send file
+     */
+
+	public void addSendFileClient(String username, Socket socket){
+		sendFileClients.put(username, socket);
+	}
+	
+	public void removeSendFileClient(String client){
+		sendFileClients.remove(client);
+	}
+	
+	public Socket getSendFileClient(String client){
+		return sendFileClients.get(client);
+	}
+	
+	/*
+	 * Handle clients call audio
+	 */
+	
+	public void addAudioCallClient(String username, Socket socket){
+		audioCallClients.put(username, socket);
+	}
+	
+	public void removeAudioCallClient(String client){
+		audioCallClients.remove(client);
+	}
+	
+	public Socket getAudioCallClient(String client){
+		return audioCallClients.get(client);
+	}
+	
 	public void appendMessage(String str){
 		textArea.append(str+"\n");
 	}
